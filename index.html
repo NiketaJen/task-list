@@ -9,10 +9,47 @@
 <body>
     <h1>Learn JSON</h1>
     <div id="output">
-
+        <ul id="taskList"></ul>
     </div>
 
     <script type="text/javascript">
+
+        //when parsing data from string, there can be no whitespaces
+        //data as an object ->
+        //let data = '{"tasks":{"Cut Grass":false,"Clean Room":false,"Go to Gym":true,"Make Dinner":false}}';
+        
+        //data as an array
+        let data= '[{"info":"Cut Grass","status":true},{"info":"Clean Room","status":false},{"info":"Go to Gym","status":false},{"info":"Make Dinner","status":false}]' 
+            console.log(data)
+        let dataJSON = JSON.parse(data);
+
+        let output = document.getElementById('output');
+        let taskList = document.querySelector('#taskList');
+
+        for(let key in dataJSON){
+            console.log(key, dataJSON[key])
+            let status = !dataJSON[key].status ?'':'checked';
+            let html='<li>'+dataJSON[key].info+'<input type="checkbox" value="'+key+'" '+status+'></li>'
+            taskList.innerHTML += html
+         }
+
+        addEvents()
+        function addEvents(){
+            let checkBoxes = document.querySelectorAll('#taskList input[type="checkbox"]')
+            for (let index in checkBoxes){
+                checkBoxes[index].onchange = updateJSON
+            }
+            console.log(checkBoxes)
+        }
+        function updateJSON(){
+            let key = event.target.value;
+            console.log(key, event.target.checked)
+            dataJSON[key].status = event.target.checked
+        }
+
+
+
+        console.log(dataJSON)
 
     </script>
     
